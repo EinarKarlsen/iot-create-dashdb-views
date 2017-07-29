@@ -1,0 +1,21 @@
+-- View that contains the last set of event data for every Elevator
+
+SELECT * FROM DASH6769.VW_ELEVATOR_STATUS;
+
+DROP VIEW DASH6769.VW_ELEVATOR_STATUS;
+
+
+-- View that contains accumulated motor temperatures on a day by day basis
+
+SELECT * FROM DASH6769.VW_ELEVATOR_EVENTS_BY_DAY;
+
+DROP VIEW DASH6769.VW_ELEVATOR_EVENTS_BY_DAY;
+
+
+
+-- View that shows the elevator alerts that have been generated over time
+
+SELECT * FROM DASH6769.VW_ELEVATOR_ALERTS;
+
+DROP VIEW DASH6769.VW_ELEVATOR_ALERTS;
+
