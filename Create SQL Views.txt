@@ -1,17 +1,5 @@
 -- View that contains the last set of event data for every Elevator
 
-CREATE VIEW DASH6769.VW_LAST_ELEVATOR_EVENTS (
-  DEVICEID,
-  DEVICETYPE,  
-  TIMESTAMP
- ) AS
-SELECT 
-   DEVICEID, 
-   DEVICETYPE,
-   MAX(TIMESTAMP) AS TIMESTAMP
-FROM DASH6769.ELEVATOR_EVENTS de1
-GROUP BY DEVICEID, DEVICETYPE ; 
-
 CREATE VIEW DASH6769.VW_ELEVATOR_STATUS (
   DEVICEID,
   DEVICETYPE, 
@@ -47,9 +35,16 @@ SELECT
   ee.TIMESTAMP,
   DATE(substring(ee.TIMESTAMP,1,10)) AS DATE,
   TIME(substring(ee.TIMESTAMP,12,8)) AS TIME
-FROM DASH6769.ELEVATOR_EVENTS ee JOIN DASH6769.VW_LAST_ELEVATOR_EVENTS lee 
+FROM DASH6769.ELEVATOR_EVENTS ee 
+JOIN (
+   SELECT 
+      DEVICEID, 
+      DEVICETYPE,
+      MAX(TIMESTAMP) AS TIMESTAMP
+   FROM DASH6769.ELEVATOR_EVENTS de1
+   GROUP BY DEVICEID, DEVICETYPE 
+) lee 
 ON ee.DEVICEID = lee.DEVICEID AND ee.TIMESTAMP = lee.TIMESTAMP;
-
 
 -- View that contains accumulated motor temperatures on a day by day basis
 
@@ -72,7 +67,7 @@ FROM DASH6769.ELEVATOR_EVENTS
 GROUP BY DEVICEID, DEVICETYPE, DATE(substring(TIMESTAMP,1,10)); 
 
 
--- View that shows the elevator alerts that hs been generated over time
+-- View that shows the elevator alerts that have been generated over time
 
 CREATE VIEW DASH6769.VW_ELEVATOR_ALERTS (
    DEVICEID,
